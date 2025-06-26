@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>中午要吃什麼?</title>
+    <style>
+        #area1{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top:60px;
+        }
+        #area2{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top:60px;
+        }
+
+        #area3{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #area4{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #choose1{
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+
+        #lucky-draw{
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            text-align: center;
+            border: none;
+            background-color: #ADD8E6;
+            padding: 5px 10px;
+            font-size: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+
+        }
+        #lucky-draw:hover{
+            background-color: #A9A9A9;
+        }
+        a{
+             text-decoration: none;
+             color:#DEB887;
+        }
+        a:hover {
+          color: #A9A9A9;
+          cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+  <div id="area1">
+      <select id="choose1">
+        <option value="全部">全部</option>
+        <option value="師大夜市">師大夜市</option>
+        <option value="古亭站">古亭站</option>
+      </select>
+  </div>
+
+  <div id="area2">
+      <button id="lucky-draw" onclick="pickRandom()">吃什麼</button>
+  </div>
+
+  <div id="area3"></div>
+  <div id="area4"></div>
+
+
+
+  <script>
+      const restaurants=[
+      {
+        name: "爭鮮",
+        place:"古亭站",
+        time:"11:00–21:30",
+        url: "https://maps.app.goo.gl/tWtx4buCbTKunMPJ6",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2088.4197088996298!2d121.52222161869318!3d25.027041465347004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a99bc81899f3%3A0x1961d88d4af71e7c!2z54it6a6u6L-06L2J5aO95Y-4LeWPpOS6reW6lw!5e0!3m2!1szh-TW!2stw!4v1750920421723!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "芝生食堂",
+        place:"古亭站",
+        time:"11:30–14:30,17:30–21:30",
+        url: "https://maps.app.goo.gl/nk4jJCJ9v12svURz9",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57843.80574918348!2d121.45769852985148!3d25.026000722128916!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a98226850261%3A0x84806f1f8d643c4f!2z6Iqd55Sf6aOf5aCCIOWPsOWMl-WPpOS6reW6lw!5e0!3m2!1szh-TW!2stw!4v1750920524585!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "麥當勞",
+        place:"古亭站",
+        time:"05:00–03:00",
+        url: "https://maps.app.goo.gl/vyv4UqMN7TxnRoHP6",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d414.3936292421815!2d121.52210730806512!3d25.027435871491377!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a99a5a25d459%3A0x282cda5b19169f1a!2z6bql55W25YueLee-heaWr-emj-mkkOW7sw!5e0!3m2!1szh-TW!2stw!4v1750920561044!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "吉野家",
+        place:"古亭站",
+        time:"08:00–00:00",
+        url: "https://maps.app.goo.gl/GHkHGg7Aq149V2ee6",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8598.360260396956!2d121.51605316377841!3d25.0284685173323!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a99a8632d6e7%3A0x7dae18a2095fdd00!2z5ZCJ6YeO5a62IOWPpOS6reW6lw!5e0!3m2!1szh-TW!2stw!4v1750920602909!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "すき家",
+        place:"古亭站",
+        time:"08:00–00:00",
+        url: "https://maps.app.goo.gl/dFHgXgbuSGbVVmnP8",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d225.94900561868423!2d121.5217383671992!3d25.02782595984702!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x140dd6c957ecf517%3A0x1603e3b2f356f992!2z44GZ44GN5a625Y-k5Lqt!5e0!3m2!1szh-TW!2stw!4v1750920178116!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "百八漁場",
+        place:"古亭站",
+        time:"11:00–14:00,17:00–21:00",
+        url: "https://maps.app.goo.gl/iiXgSyABbpzmsdPY7",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.2951191183533!2d121.52507286721999!3d25.024056864632215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a99015c761eb%3A0xa00c598f2717db4a!2z55m-5YWr6a2a5aC0IOWPpOS6reW6lw!5e0!3m2!1szh-TW!2stw!4v1750920710547!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "米澤製麵",
+        place:"古亭站",
+        time:"11:30–21:00",
+        url: "https://maps.app.goo.gl/FD4L1XYLwtLWSjkJ9",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2029.010531553381!2d121.52364144928852!3d25.024376175907797!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a990245174cf%3A0xb4c33f03804492ce!2z57Gz5r6k6KO96bq1WW9VRE9OKOWPsOWMl-WPpOS6reW6lykt6K6a5bKQ54OP6b6N6bq15bCI6ZaA5bqX!5e0!3m2!1szh-TW!2stw!4v1750920885893!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "日出拉麵",
+        place:"古亭站",
+        time:"11:00–15:00,16:30–22:00",
+        url: "https://maps.app.goo.gl/nUdtTFYH9Hj7c5oc6",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1807.6216502321972!2d121.52107432221226!3d25.025816012177902!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a99a7edcd749%3A0x34997e5a0b919974!2z5pel5Ye65ouJ6bq177yI5Y2X5piM6Lev5bqX77yJ!5e0!3m2!1szh-TW!2stw!4v1750921110545!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "師園咖哩飯",
+        place:"師大夜市",
+        time:"11:00–00:00",
+        url: "https://maps.app.goo.gl/BzfFxBBDCQf98o768",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d903.8201008117902!2d121.52829467921381!3d25.02455645302846!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a985800c9b37%3A0x8821430a32235605!2z5bir5ZyS6bm96YWl6ZueIOacrOW6lw!5e0!3m2!1szh-TW!2stw!4v1750922581544!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "燈籠滷味",
+        place:"師大夜市",
+        time:"11:30–00:30,周一休息",
+        url: "https://maps.app.goo.gl/gf1GqjmfiYk4BQZb6",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d903.8199330200397!2d121.52795646339658!3d25.024579238221904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x140dd6c86a696443%3A0xf5bb77c39a82666c!2z54eI57Gg5ru35ZGzIOWJteWni-e4veW6lw!5e0!3m2!1szh-TW!2stw!4v1750925005518!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "鍋燒意麵",
+        place:"師大夜市",
+        time:"無資料",
+        url: "https://maps.app.goo.gl/dUsDcn97XZawE5uu8",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d328.9128506663595!2d121.52883853470733!3d25.024294755371407!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a90023ec09b3%3A0x9c73fa7709a7d3ae!2z6bSo6aaZ54Wy77yI5bir5aSn5bqX!5e0!3m2!1szh-TW!2stw!4v1750925148705!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "小木屋鬆餅",
+        place:"師大夜市",
+        time:"11:00–20:30,週日休息",
+        url: "https://maps.app.goo.gl/NeffPu7cB71A3B7v6",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d639.0981878073264!2d121.52910994966707!3d25.024390230030974!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a98f9eb602fd%3A0x8057617f65a6cd62!2z5bCP5pyo5bGL6ayG6aSFIOWPsOWMl-W4q-Wkp-W6lw!5e0!3m2!1szh-TW!2stw!4v1750925207424!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "甘泉魚麵",
+        place:"師大夜市",
+        time:"11:00–14:00,17:00–20:00,週日休息",
+        url: "https://maps.app.goo.gl/YFw8TSQhZDdZ9PzL6",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d225.9562276836554!2d121.52906042969515!3d25.023903283807037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a98f7450adcd%3A0x4e5f5d66c536a5ef!2z55SY5rOJ6a2a6bq15bir5aSn5bqX!5e0!3m2!1szh-TW!2stw!4v1750925317819!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "狗狗咖哩飯",
+        place:"師大夜市",
+        time:"12:30–14:30,17:00–21:00",
+        url: "https://maps.app.goo.gl/iRLJGFQSjZW7ydpSA",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d225.95605989494106!2d121.52899337446976!3d25.023994425040865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a90f264aca2b%3A0x8e86392734d50895!2zU3RhcnQgQ3VycnnvvZzlkpblk6nlsIjos6PvvZzpppnmlpnnhp_miJDvvZzluKvlpKfnvo7po58!5e0!3m2!1szh-TW!2stw!4v1750925374169!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "師大雞肉飯",
+        place:"師大夜市",
+        time:"11:00–21:00",
+        url: "https://maps.app.goo.gl/p8xwDa63FkZSftF9A",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d268.70866247287125!2d121.52878879292825!3d25.023944926239448!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a9f81775d11d%3A0x731e625b015bef5f!2z5bir5aSn6Zue6IKJ6aOv5bCI6ZaA5bqX!5e0!3m2!1szh-TW!2stw!4v1750925505391!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "銀兔湯咖哩",
+        place:"師大夜市",
+        time:"11:30–15:00,17:00–00:00",
+        url: "https://maps.app.goo.gl/vuWMh6JfEpRkcnxaA",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d225.95621198536662!2d121.52903419718244!3d25.023911810981385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a995680bec33%3A0x44d5a8f8773b06b0!2z6YqA5YWU5rmv5ZKW5ZOpIOWJteWni-aXl-iJpuW6lw!5e0!3m2!1szh-TW!2stw!4v1750925724869!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "麻辣天后",
+        place:"師大夜市",
+        time:"16:30–23:00 六日休息",
+        url: "https://maps.app.goo.gl/Hm25mH4SrL39pknA8",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d261.0588821604061!2d121.52882798521624!3d25.024023955852606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a963a1fbf0d3%3A0x59c0e104d88ec020!2z6bq76L6j5aSp5ZCO54KS6aaZ6Y2LLeWkp-WuieW4q-Wkp-W6lw!5e0!3m2!1szh-TW!2stw!4v1750925770553!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "雲鼎阿二麻辣食堂",
+        place:"師大夜市",
+        time:"11:30–22:30",
+        url: "https://maps.app.goo.gl/cJTsVLW3QTAVfKXo6",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d369.1930381684577!2d121.52856861057457!3d25.024015166222753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a93f4e379cb9%3A0xb1e84d3c7ba72ca5!2z6Zuy6byO6Zi_5LqM6bq76L6j6aOf5aCCLeW4q-Wkp-W6lw!5e0!3m2!1szh-TW!2stw!4v1750925828322!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "13-Burger",
+        place:"師大夜市",
+        time:"12:00–14:00,17:00–20:30",
+        url: "https://maps.app.goo.gl/HqCNQ9JcLxSY3KFj9",
+        map:``
+      },
+      {
+        name: "Salt & Spice 印度料理",
+        place:"師大夜市",
+        time:"11:30–14:30,17:00–21:00",
+        url: "https://maps.app.goo.gl/EjP8zbv8mRe9WZxz8",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d225.9557304048884!2d121.5286893674591!3d25.024173400000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a9193728cb41%3A0x8cd1ee5b59da0f32!2sSalt%20%26%20Spice!5e0!3m2!1szh-TW!2stw!4v1750925984889!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "林園",
+        place:"師大夜市",
+        time:"11:30–14:00,17:00–21:00,周日周一休息",
+        url: "https://maps.app.goo.gl/GfVppft2yZpni79d8",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d225.9553136425234!2d121.5294180772101!3d25.024399778494406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a9400d9b2d33%3A0x16a5de7886784a37!2z5p6X5ZyS57KX6aOf!5e0!3m2!1szh-TW!2stw!4v1750926072856!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "師大第一腿",
+        place:"師大夜市",
+        time:"11:00–22:30",
+        url: "https://maps.app.goo.gl/K7SYMZfvnW11t4s6A",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d225.9553136425234!2d121.5294180772101!3d25.024399778494406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a981a8377009%3A0x1ed47390bfb7eecb!2z5aO55qOu4oCi5rOw6aOf5aCCKOW4q-Wkp-esrOS4gOiFvyko5bir5aSn5aSc5biCKQ!5e0!3m2!1szh-TW!2stw!4v1750926120707!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "飯館兒",
+        place:"師大夜市",
+        time:"14:30–22:00",
+        url: "https://maps.app.goo.gl/mEEsvYnL1GE4QQeS7",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d246.40790624524772!2d121.52942516105064!3d25.02345861230126!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a9934bea4519%3A0x19f5d474e3e85a75!2z6aOv6aSo5YWS!5e0!3m2!1szh-TW!2stw!4v1750926205024!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "雲南小鎮餐坊",
+        place:"師大夜市",
+        time:"11:30–14:00,16:30–21:00",
+        url: "https://maps.app.goo.gl/fdVMsmQsiA4TSvxq5",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d903.8229085105006!2d121.52896275374448!3d25.024175180163226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a9858bc15ea3%3A0x1fbf14f23853a48!2z6Zuy5Y2X5bCP6Y6u6aSQ5Z2K!5e0!3m2!1szh-TW!2stw!4v1750926291223!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "福州伯綜合麵",
+        place:"師大夜市",
+        time:"10:00–15:00,17:00–21:00,周日休息",
+        url: "https://maps.app.goo.gl/648ozpaAJMVVBE1K6",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d903.821874923062!2d121.5278344164715!3d25.024315537323883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a985976bfdfb%3A0xda7425c43518c14!2z56aP5bee5Lyv57ac5ZCI6bq1!5e0!3m2!1szh-TW!2stw!4v1750926385245!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "牛老大牛肉麵",
+        place:"師大夜市",
+        time:"11:00–14:20,16:00–23:00",
+        url: "https://maps.app.goo.gl/kQgZWR2JAqppsJb77",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d319.5479744296379!2d121.52941029403046!3d25.024820202375714!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a98f0b12f999%3A0xe49c60eec920a5e3!2z54mb6ICB5aSn6bq16aSo!5e0!3m2!1szh-TW!2stw!4v1750926510140!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "貳樓師大店",
+        place:"師大夜市",
+        time:"10:00–21:00,六日09:00–21:00",
+        url: "https://maps.app.goo.gl/gUAFhg8kekEYEuuB9",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d930.298500714888!2d121.52870428331431!3d25.02529041337557!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a985824a024f%3A0xdb361cbf6534e879!2zU2Vjb25kIEZsb29yIOiys-aok-W4q-Wkp-W6lw!5e0!3m2!1szh-TW!2stw!4v1750926623961!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "職人鐵板燒",
+        place:"師大夜市",
+        time:"11:30–15:00,17:00–22:30",
+        url: "https://maps.app.goo.gl/EuZndvtrRTXWk6qk8",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1807.6401166091146!2d121.52699112153368!3d25.024562225277865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a96c9b5dd853%3A0xf4651f63cdf156b7!2z6IG35Lq66ZC15p2_54eS!5e0!3m2!1szh-TW!2stw!4v1750926686476!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+      {
+        name: "東大門韓國特色料理",
+        place:"師大夜市",
+        time:"11:00–15:00,17:00–22:00",
+        url: "https://maps.app.goo.gl/Yh1vKvRZAaDXA9W26",
+        map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d225.9550777776567!2d121.5277995541692!3d25.02452789557996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a9faa47d3ac1%3A0x3b70cfe120691d8c!2z5p2x5aSn6ZaA6Z-T5ZyL54m56Imy5paZ55CG!5e0!3m2!1szh-TW!2stw!4v1750926785922!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`
+      },
+
+      ]
+
+      function pickRandom(){
+           const area = document.getElementById("choose1").value;
+           if(area === "全部") {
+                const pick = restaurants[Math.floor(Math.random() * restaurants.length)];
+                document.getElementById("area3").innerHTML=`
+                <h3>店家:${pick.name}</h3>
+                <h3>營業時間:${pick.time}</h3>
+                <h3><a href="${pick.url}"  target="_blank">查看位置</a></h3>
+                `;
+                document.getElementById("area4").innerHTML = pick.map;
+           }else{
+               const myList = [];
+               for (let i = 0; i < restaurants.length; i++) {
+                    if(restaurants[i].place==area){
+                        myList.push(restaurants[i]);
+                    }
+                }
+               const pick = myList[Math.floor(Math.random() * myList.length)];
+               document.getElementById("area3").innerHTML=`
+                <h3>店家:${pick.name}</h3>
+                <h3>營業時間:${pick.time}</h3>
+                <h3><a href="${pick.url}"  target="_blank">查看位置</a></h3>
+              `;
+              document.getElementById("area4").innerHTML = pick.map;
+           }
+      }
+
+
+  </script>
+</body>
+</html>
